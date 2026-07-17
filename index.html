@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조승현 | Portfolio</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <style>
+        :root {
+            --primary-color: #f8fafc;
+            --accent-color: #818cf8;
+            --accent-glow: rgba(129, 140, 248, 0.5);
+            --bg-dark: #0f172a;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+        }
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background Elements */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            left: -200px;
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulseGlow 8s infinite alternate ease-in-out;
+        }
+        .bg-glow-2 {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, rgba(0,0,0,0) 70%);
+            bottom: -100px;
+            right: -100px;
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulseGlow2 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(50px, 50px); }
+        }
+        @keyframes pulseGlow2 {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.3) translate(-40px, -60px); }
+        }
+
+        /* 언어 선택기 스타일 */
+        .lang-selector {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        .lang-btn {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .lang-btn:hover {
+            color: var(--primary-color);
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        .lang-btn.active {
+            background: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* 헤더(상단) 스타일 */
+        header {
+            position: relative;
+            padding: 8rem 2rem 5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--card-border);
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0));
+        }
+        
+        /* 프로필 사진 스타일 */
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 2rem auto;
+            display: block;
+            border: 4px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .profile-pic:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #818cf8, #c084fc, #818cf8);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            animation: gradientMove 5s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            to { background-position: 200% center; }
+        }
+        
+        /* 메인 슬로건 강조 스타일 */
+        header p.slogan {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: -0.5px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* 언어별 줄바꿈 최적화 */
+        :lang(ko) header p.slogan, 
+        :lang(ko) .card-content h3, 
+        :lang(ko) .card-content p {
+            word-break: keep-all; 
+        }
+        :lang(ja) header p.slogan, 
+        :lang(ja) .card-content h3, 
+        :lang(ja) .card-content p {
+            word-break: break-all;
+        }
+        :lang(en) header p.slogan, 
+        :lang(en) .card-content h3, 
+        :lang(en) .card-content p {
+            word-break: normal;
+            overflow-wrap: break-word;
+        }
+        
+        /* 연락처 스타일 */
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+        }
+        .contact-item:hover {
+            color: var(--text-main);
+            background: rgba(255,255,255,0.08);
+            border-color: var(--card-border);
+            transform: translateY(-3px);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--card-border), transparent);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 6rem;
+        }
+        
+        /* Glassmorphism 카드 공통 스타일 */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--card-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0; /* Fade-in 애니메이션을 위한 초기 상태 */
+            transform: translateY(30px);
+        }
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(129, 140, 248, 0.1);
+            border-color: rgba(129, 140, 248, 0.3);
+        }
+        
+        /* 카드 상단 이미지 스타일 */
+        .card-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--card-border);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: rgba(0,0,0,0.2);
+        }
+        .card:hover .card-img {
+            transform: scale(1.05);
+        }
+        
+        /* 카드 내부 텍스트 콘텐츠 영역 */
+        .card-content {
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex-grow: 1;
+            position: relative;
+        }
+        .card-content h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+            line-height: 1.4;
+        }
+        .card-content .badge {
+            display: inline-block;
+            background: rgba(129, 140, 248, 0.15);
+            color: #a5b4fc;
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            backdrop-filter: blur(4px);
+        }
+        .card-content p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+        .card-content ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 1rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .card-content ul li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 0.6rem;
+            line-height: 1.6;
+        }
+        .card-content ul li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        /* 버튼 링크 스타일 */
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            color: #a5b4fc;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-link:hover {
+            background: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 15px var(--accent-glow);
+            transform: translateX(5px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-muted);
+            margin-top: 4rem;
+            font-size: 0.95rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            header p.slogan { font-size: 1.2rem; }
+            .grid { grid-template-columns: 1fr; }
+            .profile-pic { width: 140px; height: 140px; }
+            header { padding: 7rem 1.5rem 4rem; }
+            .container { padding: 4rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <header>
+        <div class="lang-selector">
+            <button class="lang-btn active" onclick="changeLang('ko')">KOR</button>
+            <button class="lang-btn" onclick="changeLang('ja')">JPN</button>
+            <button class="lang-btn" onclick="changeLang('en')">ENG</button>
+        </div>
+
+        <img src="profile.jpg" alt="Profile Picture" class="profile-pic" onerror="this.style.display='none'">
+        
+        <h1 data-i18n="name">조승현 (CHO SEUNGHYEON)</h1>
+        <p class="slogan" data-i18n="slogan">타협 없는 품질(QA)과 국경 없는 몰입(현지화)을 향해 나아갑니다.</p>
+        
+        <div class="contact-info">
+            <a href="mailto:vv90618935@gmail.com" class="contact-item">📧 vv90618935@gmail.com</a>
+            <a href="tel:+821054108912" class="contact-item">📱 <span data-i18n="phone">010-5410-8912</span></a>
+            <a href="https://x.com/tkckwl" target="_blank" class="contact-item">𝕏 @tkckwl</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Interview & Media</h2>
+        <div class="grid" style="margin-bottom: 3rem;">
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge">Interview</span>
+                    <h3 data-i18n="interview_title">현지화 및 QA 직무 인터뷰</h3>
+                    <p data-i18n="interview_desc">게임 현지화 작업 및 QA 활동에 관한 인터뷰 기사입니다.</p>
+                    <a href="https://blog.naver.com/hashiruka48/224142655758" target="_blank" class="btn-link" data-i18n="btn_article">기사 보러가기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Localization</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="erase.png" alt="Erase -missing link-" class="card-img">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_loc">현지화</span>
+                    <h3 data-i18n="erase_title">일본 인디게임<br>'Erase -missing link-'</h3>
+                    <p data-i18n="loc_manager">한국어 현지화 담당자</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="CSC.png" alt="Crime Scene Cleaner" class="card-img">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_loc">현지화</span>
+                    <h3 data-i18n="csc_title">폴란드 인디게임<br>'Crime Scene Cleaner'</h3>
+                    <p data-i18n="loc_manager">한국어 현지화 담당자</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Quality Assurance</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="re.png" alt="프로젝트 레버넌트" class="card-img">
+                <div class="card-content">
+                    <span class="badge">QA / Testing</span>
+                    <h3 data-i18n="re_title">'프로젝트 레버넌트'</h3>
+                    <p data-i18n="re_desc">QA 및 스토리 검수 담당</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="star.jpg" alt="스타더스트: 별과 마녀" class="card-img">
+                <div class="card-content">
+                    <span class="badge">QA / Testing</span>
+                    <h3 data-i18n="star_title">'스타더스트: 별과 마녀'</h3>
+                    <p data-i18n="star_desc">시나리오 검수 담당</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge">QA / Testing</span>
+                    <h3 data-i18n="indie_qa_title">인디게임 개인 QA 프리랜서</h3>
+                    <p data-i18n="indie_qa_desc">다수의 게임사와 협업하여 QA 프로젝트 진행</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge">QA / Testing</span>
+                    <h3 data-i18n="offline_fgt_title">오프라인 테스트 및 FGT 참여</h3>
+                    <ul>
+                        <li data-i18n="sgm"><strong>스마일게이트 멤버십(SGM):</strong> 오프라인 테스트 1차, 2차 참여</li>
+                        <li data-i18n="various_fgt">다양한 장르의 게임 포커스 그룹 테스트(FGT) 및 비공개 베타 테스트(CBT) 다수 참여</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Supporters & Activities</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="plithus.png" alt="플리더스" class="card-img">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_supporter">서포터즈</span>
+                    <h3 data-i18n="plithus_title">게임 테스트 플랫폼 '플리더스'</h3>
+                    <p data-i18n="supporter_active">서포터즈 활동 중</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="plithus.png" alt="플리더스 홍보 서포터즈" class="card-img">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_pr">홍보 대외활동</span>
+                    <h3 data-i18n="plithus_pr_title">플리더스 홍보 서포터즈</h3>
+                    <p data-i18n="plithus_pr_desc">1기, 2기, 4기, 5기</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="ground.jpg" alt="G.Round" class="card-img">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_supporter">서포터즈</span>
+                    <h3 data-i18n="ground_title">글로벌 게임 테스트 플랫폼 'G.Round'</h3>
+                    <p data-i18n="supporter_active">서포터즈 활동 중</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Events & Programs</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_conf">컨퍼런스 및 네트워킹</span>
+                    <h3 data-i18n="conf_title">게임 컨퍼런스 & 밋업</h3>
+                    <ul>
+                        <li data-i18n="pgc"><strong>포켓게이머커넥트(PGC) 서밋 코리아 2025:</strong> 현장 지원 스태프 활동</li>
+                        <li data-i18n="zempie"><strong>서울 인디즈 & 젬파이 밋업:</strong> 주기적 참여를 통한 인디게임 네트워킹</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_exhib">전시 및 FGT</span>
+                    <h3>PlayX4</h3>
+                    <ul>
+                        <li data-i18n="playx4_2026"><strong>2026:</strong> 부스 전시자로 참여 ('Erase -missing link-')</li>
+                        <li data-i18n="playx4_prev"><strong>2024, 2025:</strong> 행사 참여 및 FGT 진행</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_event">행사 및 FGT</span>
+                    <h3 data-i18n="beaver">비버롹스 (구 버닝비버)</h3>
+                    <ul>
+                        <li data-i18n="beaver_desc"><strong>2023, 2024, 2025:</strong> 행사 참여 및 FGT 진행</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_event">행사 및 FGT</span>
+                    <h3 data-i18n="aicon_title">GAME AiCON & 서울팝콘</h3>
+                    <ul>
+                        <li data-i18n="aicon_desc"><strong>GAME AiCON SEOUL:</strong> 2025, 2026 참여</li>
+                        <li data-i18n="popcon_desc"><strong>서울팝콘:</strong> 2024, 2025 행사 참여 및 FGT 진행</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_event_part">행사 참여</span>
+                    <h3 data-i18n="other_events_title">기타 게임 및 서브컬처 행사</h3>
+                    <ul>
+                        <li data-i18n="daegu"><strong>대구콘텐츠페어 2025:</strong> 참여</li>
+                        <li data-i18n="altg"><strong>ALT+G 2025:</strong> 참여</li>
+                        <li data-i18n="comicw"><strong>코믹월드 WINTER 일산 2025:</strong> 참여</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Certifications</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_lang">어학 자격증</span>
+                    <h3 data-i18n="jlpt_title">JLPT (일본어능력시험) N5</h3>
+                    <p data-i18n="jlpt_date">2026년 01월 19일 취득</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <span class="badge" data-i18n="badge_cert">국가공인자격</span>
+                    <h3 data-i18n="gtq_title">GTQ 그래픽기술자격 1급</h3>
+                    <p data-i18n="gtq_date">2026년 05월 15일 취득</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 CHO SEUNGHYEON. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const translations = {
+            ko: {
+                name: "조승현 (CHO SEUNGHYEON)",
+                phone: "010-5410-8912",
+                slogan: "타협 없는 품질(QA)과 국경 없는 몰입(현지화)을 향해 나아갑니다.",
+                interview_title: "현지화 및 QA 직무 인터뷰",
+                interview_desc: "게임 현지화 작업 및 QA 활동에 관한 인터뷰 기사입니다.",
+                btn_article: "기사 보러가기 →",
+                badge_loc: "현지화",
+                erase_title: "일본 인디게임<br>'Erase -missing link-'",
+                loc_manager: "한국어 현지화 담당자",
+                csc_title: "폴란드 인디게임<br>'Crime Scene Cleaner'",
+                re_title: "'프로젝트 레버넌트'",
+                re_desc: "QA 및 스토리 검수 담당",
+                star_title: "'스타더스트: 별과 마녀'",
+                star_desc: "시나리오 검수 담당",
+                indie_qa_title: "인디게임 개인 QA 프리랜서",
+                indie_qa_desc: "다수의 게임사와 협업하여 QA 프로젝트 진행",
+                offline_fgt_title: "오프라인 테스트 및 FGT 참여",
+                sgm: "<strong>스마일게이트 멤버십(SGM):</strong> 오프라인 테스트 1차, 2차 참여",
+                various_fgt: "다양한 장르의 게임 포커스 그룹 테스트(FGT) 및 비공개 베타 테스트(CBT) 다수 참여",
+                badge_supporter: "서포터즈",
+                plithus_title: "게임 테스트 플랫폼 '플리더스'",
+                supporter_active: "서포터즈 활동 중",
+                badge_pr: "홍보 대외활동",
+                plithus_pr_title: "플리더스 홍보 서포터즈",
+                plithus_pr_desc: "1기, 2기, 4기, 5기",
+                ground_title: "글로벌 게임 테스트 플랫폼 'G.Round'",
+                badge_conf: "컨퍼런스 및 네트워킹",
+                conf_title: "게임 컨퍼런스 & 밋업",
+                pgc: "<strong>포켓게이머커넥트(PGC) 서밋 코리아 2025:</strong> 현장 지원 스태프 활동",
+                zempie: "<strong>서울 인디즈 & 젬파이 밋업:</strong> 주기적 참여를 통한 인디게임 네트워킹",
+                badge_exhib: "전시 및 FGT",
+                playx4_2026: "<strong>2026:</strong> 부스 전시자로 참여 ('Erase -missing link-')",
+                playx4_prev: "<strong>2024, 2025:</strong> 행사 참여 및 FGT 진행",
+                badge_event: "행사 및 FGT",
+                beaver: "비버롹스 (구 버닝비버)",
+                beaver_desc: "<strong>2023, 2024, 2025:</strong> 행사 참여 및 FGT 진행",
+                aicon_title: "GAME AiCON & 서울팝콘",
+                aicon_desc: "<strong>GAME AiCON SEOUL:</strong> 2025, 2026 참여",
+                popcon_desc: "<strong>서울팝콘:</strong> 2024, 2025 행사 참여 및 FGT 진행",
+                badge_event_part: "행사 참여",
+                other_events_title: "기타 게임 및 서브컬처 행사",
+                daegu: "<strong>대구콘텐츠페어 2025:</strong> 참여",
+                altg: "<strong>ALT+G 2025:</strong> 참여",
+                comicw: "<strong>코믹월드 WINTER 일산 2025:</strong> 참여",
+                badge_lang: "어학 자격증",
+                jlpt_title: "JLPT (일본어능력시험) N5",
+                jlpt_date: "2026년 01월 19일 취득",
+                badge_cert: "국가공인자격",
+                gtq_title: "GTQ 그래픽기술자격 1급",
+                gtq_date: "2026년 05월 15일 취득"
+            },
+            ja: {
+                name: "チョ・スンヒョン (CHO SEUNGHYEON)",
+                phone: "+82 10-5410-8912",
+                slogan: "妥協のない品質（QA）と国境のない没入感（ローカライズ）を目指して進みます。",
+                interview_title: "ローカライズおよびQA職務インタビュー",
+                interview_desc: "ゲームのローカライズ作業およびQA活動に関するインタビュー記事です。",
+                btn_article: "記事を読む →",
+                badge_loc: "ローカライズ",
+                erase_title: "日本のインディーゲーム<br>'Erase -missing link-'",
+                loc_manager: "韓国語ローカライズ担当",
+                csc_title: "ポーランドのインディーゲーム<br>'Crime Scene Cleaner'",
+                re_title: "『プロジェクト・レヴェナント』",
+                re_desc: "QAおよびストーリー監修担当",
+                star_title: "『スターダスト：星と魔女』",
+                star_desc: "シナリオ監修担当",
+                indie_qa_title: "インディーゲーム個人QAフリーランス",
+                indie_qa_desc: "多数のゲーム会社と協業してQAプロジェクトを進行",
+                offline_fgt_title: "オフラインテストおよびFGT参加",
+                sgm: "<strong>スマイルゲートメンバーシップ(SGM):</strong> オフラインテスト第1次、第2次参加",
+                various_fgt: "多様なジャンルのゲームのフォーカスグループテスト(FGT)およびクローズドベータテスト(CBT)に多数参加",
+                badge_supporter: "サポーターズ",
+                plithus_title: "ゲームテストプラットフォーム「Plithus」",
+                supporter_active: "サポーターズ活動中",
+                badge_pr: "広報対外活動",
+                plithus_pr_title: "Plithus広報サポーターズ",
+                plithus_pr_desc: "第1期、第2期、第4期、第5期",
+                ground_title: "グローバルゲームテストプラットフォーム「G.Round」",
+                badge_conf: "カンファレンス＆ネットワーキング",
+                conf_title: "ゲームカンファレンス＆ミートアップ",
+                pgc: "<strong>Pocket Gamer Connects (PGC) サミット韓国 2025:</strong> 現場サポートスタッフ活動",
+                zempie: "<strong>ソウルインディーズ＆Zempieミートアップ:</strong> 定期的な参加を通じたインディーゲームネットワーキング",
+                badge_exhib: "展示およびFGT",
+                playx4_2026: "<strong>2026:</strong> ブース展示者として参加 ('Erase -missing link-')",
+                playx4_prev: "<strong>2024, 2025:</strong> 行事参加およびFGT進行",
+                badge_event: "行事およびFGT",
+                beaver: "ビバーロックス（旧バーニングビーバー）",
+                beaver_desc: "<strong>2023, 2024, 2025:</strong> 行事参加およびFGT進行",
+                aicon_title: "GAME AiCON & ソウルポップコン",
+                aicon_desc: "<strong>GAME AiCON SEOUL:</strong> 2025, 2026 参加",
+                popcon_desc: "<strong>ソウルポップコン:</strong> 2024, 2025 行事参加およびFGT進行",
+                badge_event_part: "行事参加",
+                other_events_title: "その他のゲームおよびサブカルチャー行事",
+                daegu: "<strong>大邱コンテンツフェア2025:</strong> 参加",
+                altg: "<strong>ALT+G 2025:</strong> 参加",
+                comicw: "<strong>コミックワールドWINTER一山2025:</strong> 参加",
+                badge_lang: "語学資格証",
+                jlpt_title: "JLPT（日本語能力試験）N5",
+                jlpt_date: "2026年01月19日取得",
+                badge_cert: "国家公認資格",
+                gtq_title: "GTQグラフィック技術資格1級",
+                gtq_date: "2026年05月15日取得"
+            },
+            en: {
+                name: "CHO SEUNGHYEON",
+                phone: "+82 10-5410-8912",
+                slogan: "Striving for uncompromising Quality (QA) and borderless immersion (Localization).",
+                interview_title: "Localization & QA Job Interview",
+                interview_desc: "An interview article discussing game localization work and QA activities.",
+                btn_article: "Read Article →",
+                badge_loc: "Localization",
+                erase_title: "Japanese Indie Game<br>'Erase -missing link-'",
+                loc_manager: "Korean Localization Manager",
+                csc_title: "Polish Indie Game<br>'Crime Scene Cleaner'",
+                re_title: "'Project Revenant'",
+                re_desc: "In charge of QA and Story Review",
+                star_title: "'Stardust: Star and Witch'",
+                star_desc: "Scenario Review",
+                indie_qa_title: "Freelance Indie Game QA",
+                indie_qa_desc: "Collaborated with multiple game companies on QA projects",
+                offline_fgt_title: "Offline Testing & FGT Participation",
+                sgm: "<strong>Smilegate Membership (SGM):</strong> Participated in 1st & 2nd offline tests",
+                various_fgt: "Participated in multiple Focus Group Tests (FGT) and Closed Beta Tests (CBT) across various genres",
+                badge_supporter: "Supporters",
+                plithus_title: "Game Testing Platform 'Plithus'",
+                supporter_active: "Active Supporter",
+                badge_pr: "PR Activities",
+                plithus_pr_title: "Plithus PR Supporter",
+                plithus_pr_desc: "1st, 2nd, 4th, 5th Cohort",
+                ground_title: "Global Game Testing Platform 'G.Round'",
+                badge_conf: "Conference & Networking",
+                conf_title: "Game Conferences & Meetups",
+                pgc: "<strong>Pocket Gamer Connects (PGC) Summit Korea 2025:</strong> On-site Support Staff",
+                zempie: "<strong>Seoul Indies & Zempie Meetup:</strong> Regular networking participation",
+                badge_exhib: "Exhibition & FGT",
+                playx4_2026: "<strong>2026:</strong> Participated as Booth Exhibitor ('Erase -missing link-')",
+                playx4_prev: "<strong>2024, 2025:</strong> Event Participation and FGT Execution",
+                badge_event: "Event & FGT",
+                beaver: "Beaver Rox (Formerly Burning Beaver)",
+                beaver_desc: "<strong>2023, 2024, 2025:</strong> Event Participation and FGT Execution",
+                aicon_title: "GAME AiCON & Seoul Popcon",
+                aicon_desc: "<strong>GAME AiCON SEOUL:</strong> Participated in 2025, 2026",
+                popcon_desc: "<strong>Seoul Popcon:</strong> Event Participation and FGT Execution (2024, 2025)",
+                badge_event_part: "Event Participation",
+                other_events_title: "Other Game & Subculture Events",
+                daegu: "<strong>Daegu Content Fair 2025:</strong> Participated",
+                altg: "<strong>ALT+G 2025:</strong> Participated",
+                comicw: "<strong>Comic World WINTER Ilsan 2025:</strong> Participated",
+                badge_lang: "Language Certification",
+                jlpt_title: "JLPT N5",
+                jlpt_date: "Acquired on Jan 19, 2026",
+                badge_cert: "National Certification",
+                gtq_title: "GTQ Graphic Technology Qualification 1st Grade",
+                gtq_date: "Acquired on May 15, 2026"
+            }
+        };
+
+        function changeLang(lang) {
+            // 버튼 활성화 상태 변경
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // 텍스트 변환 적용
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // html lang 속성 변경
+            document.documentElement.lang = lang;
+        }
+
+        // 스크롤 애니메이션 (Fade-in 요소)
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach((card, index) => {
+                // 약간의 딜레이를 주어 순차적으로 나타나게 함
+                card.style.transitionDelay = `${(index % 3) * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
